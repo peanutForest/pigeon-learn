@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pigeon-learn" />
+        <module name="pigeon-learning" />
         <module name="pigeon-test" />
       </profile>
     </annotationProcessing>
