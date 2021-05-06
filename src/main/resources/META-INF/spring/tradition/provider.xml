@@ -6,7 +6,7 @@
     <bean class="com.dianping.pigeon.remoting.provider.config.spring.ServiceBean" init-method="init">
         <property name="services">
             <map>
-                <entry key="http://localhost/echoService" value-ref="echoServiceImpl"/>
+                <entry key="org.example.pigeon.test.EchoService" value-ref="echoServiceImpl"/>
             </map>
         </property>
         <property name="port">
