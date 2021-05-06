@@ -1,7 +1,7 @@
-package org.example.pigeon.test.annotation;
+package org.example.pigeon.learning.annotation;
 
 import com.dianping.pigeon.remoting.provider.config.annotation.Service;
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 // 服务提供方使用注解
 @Service

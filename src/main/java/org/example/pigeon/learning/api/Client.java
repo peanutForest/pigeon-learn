@@ -1,7 +1,7 @@
-package org.example.pigeon.test.api;
+package org.example.pigeon.learning.api;
 
 import com.dianping.pigeon.remoting.ServiceFactory;
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 public class Client {
 

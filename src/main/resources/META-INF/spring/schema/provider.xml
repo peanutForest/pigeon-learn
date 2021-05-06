@@ -9,7 +9,7 @@
 				http://code.dianping.com/schema/pigeon http://code.dianping.com/schema/pigeon/pigeon-service-2.0.xsd"
        default-autowire="byName">
 
-    <bean id="echoServiceImpl" class="org.example.pigeon.test.schema.EchoServiceSchemaImpl"/>
-    <pigeon:service id="echoService" interface="org.example.pigeon.test.EchoService" ref="echoServiceImpl" />
+    <bean id="echoServiceImpl" class="org.example.pigeon.learning.schema.EchoServiceSchemaImpl"/>
+    <pigeon:service id="echoService" interface="org.example.pigeon.learning.EchoService" ref="echoServiceImpl" />
 
 </beans>

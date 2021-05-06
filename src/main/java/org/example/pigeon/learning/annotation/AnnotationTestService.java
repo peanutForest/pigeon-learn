@@ -1,7 +1,7 @@
-package org.example.pigeon.test.annotation;
+package org.example.pigeon.learning.annotation;
 
 import com.dianping.pigeon.remoting.invoker.config.annotation.Reference;
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 public class AnnotationTestService {
 

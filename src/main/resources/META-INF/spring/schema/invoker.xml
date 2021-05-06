@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://code.dianping.com/schema/pigeon http://code.dianping.com/schema/pigeon/pigeon-service-2.0.xsd">
 
-    <pigeon:reference id="echoService" timeout="1000" protocol="http" serialize="hessian" callType="sync" interface="org.example.pigeon.test.EchoService" />
+    <pigeon:reference id="echoService" timeout="1000" protocol="http" serialize="hessian" callType="sync" interface="org.example.pigeon.learning.EchoService" />
     <!-- timeout-超时时间，毫秒-->
     <!-- callType-调用方式，sync/future/callback/oneway，默认sync -->
     <!-- protocol-协议，default/http，默认default -->

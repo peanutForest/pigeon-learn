@@ -1,8 +1,8 @@
-package org.example.pigeon.test.api;
+package org.example.pigeon.learning.api;
 
 import com.dianping.pigeon.remoting.ServiceFactory;
 import com.dianping.pigeon.remoting.provider.config.ProviderConfig;
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 import java.io.IOException;
 

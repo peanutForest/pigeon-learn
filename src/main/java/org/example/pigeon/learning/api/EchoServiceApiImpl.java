@@ -1,6 +1,6 @@
-package org.example.pigeon.test.api;
+package org.example.pigeon.learning.api;
 
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 public class EchoServiceApiImpl implements EchoService {
 

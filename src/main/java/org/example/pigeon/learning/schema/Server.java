@@ -1,4 +1,4 @@
-package org.example.pigeon.test.schema;
+package org.example.pigeon.learning.schema;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

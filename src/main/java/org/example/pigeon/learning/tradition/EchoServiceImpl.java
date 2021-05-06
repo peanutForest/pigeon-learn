@@ -1,6 +1,6 @@
-package org.example.pigeon.test.tradition;
+package org.example.pigeon.learning.tradition;
 
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 public class EchoServiceImpl implements EchoService {
 

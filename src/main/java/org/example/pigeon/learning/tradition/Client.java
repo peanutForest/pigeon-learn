@@ -1,7 +1,6 @@
-package org.example.pigeon.test.tradition;
+package org.example.pigeon.learning.tradition;
 
-import org.example.pigeon.test.EchoService;
-import org.example.pigeon.test.annotation.AnnotationTestService;
+import org.example.pigeon.learning.EchoService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Client {

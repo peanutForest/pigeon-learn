@@ -1,6 +1,6 @@
-package org.example.pigeon.test.schema;
+package org.example.pigeon.learning.schema;
 
-import org.example.pigeon.test.EchoService;
+import org.example.pigeon.learning.EchoService;
 
 public class EchoServiceSchemaImpl implements EchoService {
 

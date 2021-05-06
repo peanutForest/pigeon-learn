@@ -1,4 +1,4 @@
-package org.example.pigeon.test;
+package org.example.pigeon.learning;
 
 import com.dianping.pigeon.remoting.invoker.concurrent.InvocationCallback;
 
