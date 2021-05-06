@@ -1,0 +1,33 @@
+@startuml
+skinparam classAttributeIconSize 0
+interface FactoryBean<T> {
+    T getObject()
+}
+class ReferenceBean {
+    - Object obj
+    + void init() {this.obj=ServiceFactory.getService(invokerConfig)}
+    + Object getObject() {return this.obj}
+}
+class ServiceFactory {
+    + {static} ServiceProxy serviceProxy
+    + {static} <T> T getService(InvokerConfig<T>) {return serviceProxy.getProxy(invokerConfig)}
+}
+interface ServiceProxy {
+    <T> T getProxy(InvokerConfig<T>);
+}
+class DefaultServiceProxy {
+
+}
+class AbstractServiceProxy {
+
+}
+class InvokerBootStrap {
+    + {static} void startup()
+}
+FactoryBean <|.. ReferenceBean
+ReferenceBean -right-> ServiceFactory : 依赖
+ServiceFactory *-- ServiceProxy
+ServiceProxy <|.. AbstractServiceProxy
+AbstractServiceProxy <|-- DefaultServiceProxy
+AbstractServiceProxy -left-> InvokerBootStrap : 依赖
+@enduml
