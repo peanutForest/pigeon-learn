@@ -1,4 +1,4 @@
-package org.example.pigeon.test.tradition;
+package org.example.pigeon.test;
 
 import com.dianping.pigeon.remoting.invoker.concurrent.InvocationCallback;
 

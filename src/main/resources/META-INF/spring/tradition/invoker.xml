@@ -31,5 +31,5 @@
         <property name="callback" ref="echoServiceCallback" />
     </bean>
 
-    <bean id="echoServiceCallback" class="org.example.pigeon.test.tradition.EchoServiceCallback" />
+    <bean id="echoServiceCallback" class="org.example.pigeon.test.EchoServiceCallback" />
 </beans>
