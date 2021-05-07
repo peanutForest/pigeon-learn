@@ -69,7 +69,8 @@
         - 通过`ServiceFactory.addServices(providerConfigList)`注册服务
 - `ProviderBootStrap`: 与`InvokerBootStrap`类似，完成服务端的一系列初始化操作
     - 初始化服务方处理器工厂、序列化工厂、注册管理器
-    - 初始化JettyHttpServer、NettyServer
+    - 初始化JettyHttpServer监听4080端口
+    - 初始化NettyServer
     - 初始化`RequestThreadPoolProcessor`的所有线程
 - `ServicePublisher`: 将服务方的服务节点信息注册到zk注册中心，通过`RegistryManager`注册，实际上使用的是`CuratorRegistry`
 - `NettyServer`: 用netty实现的网络服务端，实现了`Server`接口
