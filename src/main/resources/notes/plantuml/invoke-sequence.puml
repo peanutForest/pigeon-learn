@@ -1,0 +1,63 @@
+@startuml
+title 客户端调用远程服务链路
+participant "serviceProxy\n代理服务对象" as 代理服务对象
+participant ServiceInvocationProxy #94acda
+participant ServiceInvocationHandler #94acda
+participant ServiceInvocationFilter #94acda
+participant RemoteCallInvokerFilter #94acda
+participant NettyClient #94acda
+participant ServiceInvocationRepository #b7d39a
+participant ResponseProcessor #b7d39a
+participant AbstractClient #b7d39a
+participant NettyClientHandler #b7d39a
+
+[-> 代理服务对象 ++ : 调用服务
+activate ServiceInvocationProxy
+代理服务对象 -> ServiceInvocationProxy : invoke()
+ServiceInvocationProxy -> ServiceInvocationHandler ++ : handle()
+activate NettyClient
+NettyClient -> NettyClient : initBootstrap()
+NettyClient -> NettyClientHandler : 初始化ClientBootstrap
+deactivate NettyClient
+ServiceInvocationHandler -> ServiceInvocationFilter ++ : invoke()
+ServiceInvocationFilter --> ServiceInvocationHandler -- : handle()
+ServiceInvocationHandler -> ServiceInvocationFilter ++ : invoke()
+ServiceInvocationFilter --> ServiceInvocationHandler -- : handle()
+ServiceInvocationHandler <-> ServiceInvocationFilter : ...handler和filter反复调用...
+||45||
+ServiceInvocationHandler -> RemoteCallInvokerFilter ++ : invoke()\n最后调用的一个filter，通过网络传输请求数据
+RemoteCallInvokerFilter -> NettyClient -- : write()
+note over RemoteCallInvokerFilter
+    提供四种调用方式：
+    SYNC, CALLBACK
+    FUTURE, ONEWAY
+    都通过NettyClient的write方法
+    将请求数据发送到远程服务器
+end note
+activate NettyClient
+NettyClient ->] : 写数据，将请求数据发送到目标服务器
+deactivate NettyClient
+||50||
+NettyClientHandler <--] ++ : messageReceived()
+NettyClientHandler --> AbstractClient --: processResponse()
+activate AbstractClient
+AbstractClient --> ResponseProcessor : doProcessResponse()
+deactivate AbstractClient
+activate ResponseProcessor
+ResponseProcessor --> ServiceInvocationRepository : receiveResponse()
+deactivate ResponseProcessor
+activate ServiceInvocationRepository
+ServiceInvocationRepository --> RemoteCallInvokerFilter : callback()\n将结果写入CallbackFuture中\nfilter通过future.getResponse()取结果
+deactivate ServiceInvocationRepository
+activate RemoteCallInvokerFilter
+RemoteCallInvokerFilter --> ServiceInvocationHandler : return response\n返回远程服务调用结果给handler
+deactivate RemoteCallInvokerFilter
+ServiceInvocationHandler -> ServiceInvocationFilter ++: invoke()
+ServiceInvocationFilter --> ServiceInvocationHandler --: handle()
+ServiceInvocationHandler <-> ServiceInvocationFilter : ...handler和filter反复调用\nhandler还需要filter的一系列处理...
+ServiceInvocationHandler --> ServiceInvocationProxy -- : return InvocationResponse
+deactivate ServiceInvocationProxy
+ServiceInvocationProxy -> ServiceInvocationProxy ++: extractResult()\n提取数据
+ServiceInvocationProxy --> 代理服务对象 -- : return result\n返回真正的调用结果
+[<- 代理服务对象 -- : result
+@enduml

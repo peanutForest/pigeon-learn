@@ -22,7 +22,7 @@
         <property name="retries" value="1" />
     </bean>
 
-    <!--客户端调用远程服务的模式之一：callback回调模式，提供一个回调对象给pigeon，在调用结束返回结果时将结果传递给回调对象-->
+    <!--客户端调用远程服务的模式之一：callback回调模式，提供一个回调对象给pigeon，在调用结束返回结果时将结果传递给回调对象处理-->
     <bean id="echoServiceWithCallback" class="com.dianping.pigeon.remoting.invoker.config.spring.ReferenceBean" init-method="init">
         <property name="url" value="org.example.pigeon.learning.EchoService" />
         <property name="interfaceName" value="org.example.pigeon.learning.EchoService" />

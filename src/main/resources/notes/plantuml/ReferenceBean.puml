@@ -1,33 +1,83 @@
 @startuml
 skinparam classAttributeIconSize 0
 interface FactoryBean<T> {
-    T getObject()
+    getObject(): T
 }
-class ReferenceBean {
-    - Object obj
-    + void init() {this.obj=ServiceFactory.getService(invokerConfig)}
-    + Object getObject() {return this.obj}
+class ReferenceBean #1EFECE {
+    - obj:Object
+    --
+    + init(): void
+    + getObject(): Object
 }
-class ServiceFactory {
-    + {static} ServiceProxy serviceProxy
-    + {static} <T> T getService(InvokerConfig<T>) {return serviceProxy.getProxy(invokerConfig)}
+class ServiceFactory #FEFECE {
+    + {static} serviceProxy: ServiceProxy
+    + {static} getService(invokerConfig: InvokerConfig<T>): T
 }
 interface ServiceProxy {
-    <T> T getProxy(InvokerConfig<T>);
+    getProxy(invokerConfig: InvokerConfig<T>): T
 }
-class DefaultServiceProxy {
-
-}
-class AbstractServiceProxy {
-
+abstract class AbstractServiceProxy {
+   - regionPolicyManager: RegionPolicyManager
+   + getProxy(invokerConfig: InvokerConfig<T>): T
 }
 class InvokerBootStrap {
-    + {static} void startup()
+    + {static} startup(): void
+}
+enum RegionPolicyManager {
+    + register(serviceName: String, suffix: String, regionPolicy: Object): void
+}
+class ClientManager {
+    + registerClients(invokerConfig: InvokerConfig): Set<HostInfo>
+}
+note top of InvokerBootStrap
+    完成一系列初始化操作，包括
+    SerializerFactory.init()
+    InvokerProcessHandlerFactory.init()
+    RegionPolicyManager.INSTANCE.init()
+end note
+interface Serializer {
+    proxyRequest(invokerConfig: InvokerConfig<?>): Object
+}
+class SerializerFactory {
+    + {static} getSerializer(serializerType: byte): Serializer
+}
+abstract class AbstractSerializer {
+    proxyRequest(invokerConfig: InvokerConfig<?>): Object
+}
+class Proxy {
+    + {static} newProxyInstance(loader: ClassLoader, interfaces: Class<?>[], h: InvocationHandler): Object
+}
+interface InvocationHandler {
+    invoke(proxy: Object, method: Method, args: Object[]): Object
+}
+class ServiceInvocationProxy {
+    - invokerConfig: InvokerConfig<?>
+    - handler: ServiceInvocationHandler
+    + ServiceInvocationProxy(invokerConfig: InvokerConfig<?>, handler: ServiceInvocationHandler)
+}
+interface ServiceInvocationHandler {
+    handle(invocationContext: InvocationContext): InvocationResponse
+}
+class InvokerProcessHandlerFactory {
+    + {static} selectInvocationHandler(invokerConfig: InvokerConfig<?>): ServiceInvocationHandler
+}
+interface ServiceInvocationFilter<I extends InvocationContext> {
+    invoke(handler: ServiceInvocationHandler, invocationContext: I): InvocationResponse
 }
 FactoryBean <|.. ReferenceBean
-ReferenceBean -right-> ServiceFactory : 依赖
-ServiceFactory *-- ServiceProxy
+ReferenceBean .down.> ServiceFactory : 获取服务对象
+ServiceFactory .down.> ServiceProxy : 获取服务代理对象
 ServiceProxy <|.. AbstractServiceProxy
-AbstractServiceProxy <|-- DefaultServiceProxy
-AbstractServiceProxy -left-> InvokerBootStrap : 依赖
+AbstractServiceProxy .left.> InvokerBootStrap : 客户端初始化
+AbstractServiceProxy .up.> RegionPolicyManager : 注册路由策略
+AbstractServiceProxy .right.> ClientManager : 注册客户端，获取真实服务地址
+AbstractServiceProxy .down.> Serializer : 获取服务代理对象
+Serializer .left.> SerializerFactory : 由工厂创建
+Serializer <|.. AbstractSerializer
+AbstractSerializer .down.> Proxy : 通过动态代理创建服务代理对象
+Proxy .down.> InvocationHandler : 需要
+InvocationHandler <|.. ServiceInvocationProxy
+ServiceInvocationProxy .down.> ServiceInvocationHandler : 依赖
+ServiceInvocationHandler .left.> InvokerProcessHandlerFactory : 由工厂创建
+ServiceInvocationHandler ..> ServiceInvocationFilter : 依赖
 @enduml

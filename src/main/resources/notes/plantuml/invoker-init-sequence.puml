@@ -1,0 +1,44 @@
+@startuml
+title 客户端初始化，获取动态代理服务对象
+activate ReferenceBean
+ReferenceBean -> ReferenceBean  : init()
+ReferenceBean -> ServiceFactory ++ : getService()
+ServiceFactory -> AbstractServiceProxy ++ : getProxy()
+AbstractServiceProxy -> InvokerBootStrap : startup()
+note right InvokerBootStrap
+    初始化一系列
+    工厂和管理器
+end note
+AbstractServiceProxy -> AbstractSerializer ++ : proxyRequest()
+note right
+    创建代理服务对象
+end note
+AbstractSerializer -> Proxy ++ : newProxyInstance()
+Proxy --> AbstractSerializer -- : 返回动态代理对象
+AbstractSerializer --> AbstractServiceProxy -- : 返回代理服务对象
+AbstractServiceProxy -> RegionPolicyManager : register()
+note over RegionPolicyManager
+    注册路由策略和配置
+end note
+AbstractServiceProxy -> ClientManager : registerClients()
+note over ClientManager
+    注册客户端
+    并从zk获取
+    真实服务地址
+end note
+AbstractServiceProxy -> AbstractServiceProxy : 将代理对象放到services中
+AbstractServiceProxy --> ServiceFactory -- : 返回代理服务对象
+ServiceFactory --> ReferenceBean --: 返回代理服务对象
+deactivate ReferenceBean
+@enduml
+
+
+
+
+
+
+
+
+
+
+
