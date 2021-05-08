@@ -1,35 +1,32 @@
 @startuml
-rectangle RPC基础架构图 {
+rectangle Pigeon基础架构图 {
     rectangle 服务方 {
-        [执行服务方法] --> [服务定位]
         [执行服务方法] <-- [服务定位]
-        [服务定位] --> [解析请求]
         [服务定位] <-- [解析请求]
         [（反）序列化] as SP
-        [解析请求] --> SP
         [解析请求] <-- SP
         [网络通信] as TP
-        SP --> TP
         SP <-- TP
+        SP ..> TP
+        [执行服务方法] ..> SP
     }
     rectangle 调用方 {
         [本地方法] --> [动态代理]
-        [本地方法] <-- [动态代理]
         [动态代理] --> [负载均衡与路由发现]
-        [动态代理] <-- [负载均衡与路由发现]
         [（反）序列化] as SI
         [负载均衡与路由发现] --> SI
-        [负载均衡与路由发现] <-- SI
         [网络通信] as TI
+        SI <.. TI
         SI --> TI
-        SI <-- TI
+        [动态代理] <. SI
+        [本地方法] <. [动态代理]
     }
     rectangle zookeeper
 
     [负载均衡与路由发现] -up-> zookeeper : 订阅
     [负载均衡与路由发现] <-up- zookeeper : 通知
     服务方 --> zookeeper : 发布
+    TI <. TP
     TI -> TP
-    TI <- TP
 }
 @enduml

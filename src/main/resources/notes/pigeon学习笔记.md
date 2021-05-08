@@ -1,7 +1,7 @@
 # 一、基础架构
-## 1.1 RPC的基础结构
-![](pictures/architecture.png)
-## 1.2 RPC的基本流程
+## 1.1 Pigeon的基础结构
+![](pictures/pigeon_architecture.png)
+## 1.2 Pigeon的基本流程
 - 客户端
     1. 客户端调用某个服务的本地存根方法时，实际上是使用动态代理生成的代理对象，在执行服务的方法时实际上执行的是*InvocationHandler*接口的invoke方法。
         - pigeon框架的*InvocationHandler*即为ServiceInvocationProxy
@@ -76,7 +76,7 @@
 - `NettyServer`: 用netty实现的网络服务端，实现了`Server`接口
     - 负责初始化`ServerBootstrap`
     - 监听tcp端口
-- `JttyHttpServer`: 实现了`Server`接口，负责http通信，监听4080端口
+- `JettyHttpServer`: 实现了`Server`接口，负责http通信，监听4080端口
 - `NettyServerHandler`: 当客户端发起数据请求时，会接收数据
     - 如果是心跳检查，则直接处理并返回数据
     - 如果是真实请求，通过`RequestThreadPoolProcessor`来处理，找到服务调用最后返回数据
@@ -87,4 +87,4 @@
     4. scanner心跳handler
     - 通过`ServiceInvocationHandler`和`ServiceInvocationFilter`处理请求数据，与客户端中一样，`Filter`其实是真正完成rpc功能的类
         - `BusinessProcessFilter`通过反射执行真正的服务方法
-        - `WriteResponseProcessorFilter`回写处理完成的reponse数据给客户端，完成整个服务端处理请求的链路
+        - `WriteResponseProcessorFilter`回写处理完成的response数据给客户端，完成整个服务端处理请求的链路
